@@ -54,13 +54,11 @@ func physics_pre_movement(_delta: float, player_body: XRToolsPlayerBody) -> void
 				grav_z = 2
 				_gravity_dir = zone.global_transform.basis.y * zone.gravity * -1
 
-	if grav_z == 0:
 		for zone in gravity_zones1:
 			if zone.overlaps_body(player_body) and zone is Area3D:
 				grav_z = 1
 				_gravity_dir = zone.global_transform.basis.y * zone.gravity * -1
 
-	if grav_z == 0:
 		fly_desktop.set_flying(true)
 		fly_xr.set_flying(true)
 	else:
