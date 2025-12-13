@@ -1,8 +1,6 @@
 @tool
 class_name XRToolsDesktopMovementSprint
 extends XRToolsMovementProvider
-
-
 ## XR Tools Movement Provider for Sprinting
 ##
 ## This script provides sprinting movement for the player. It assumes there is
@@ -11,7 +9,6 @@ extends XRToolsMovementProvider
 ## There will not be an error, there just will not be any reason for it to
 ## have any impact on the player.  This node should be a direct child of
 ## the [XROrigin3D] node rather than to a specific [XRController3D].
-
 
 ## Signal emitted when sprinting starts
 signal sprinting_started()
@@ -28,40 +25,38 @@ enum SprintType {
 
 
 ## Type of sprinting
-@export var sprint_type : SprintType = SprintType.HOLD_TO_SPRINT
+@export var sprint_type: SprintType = SprintType.HOLD_TO_SPRINT
 
 ## Sprint speed multiplier (multiplier from speed set by direct movement node(s))
-@export_range(1.0, 4.0) var sprint_speed_multiplier : float = 2.0
+@export_range(1.0, 4.0) var sprint_speed_multiplier: float = 2.0
 
 ## Movement provider order
-@export var order : int = 11
+@export var order: int = 11
 
 ## Sprint button
-@export var sprint_button : String = "action_sprint"
+@export var sprint_button: String = "action_sprint"
 
 # Sprint button down state
-var _sprint_button_down : bool = false
+var _sprint_button_down: bool = false
 
 # Variable to hold left controller direct movement node original max speed
-var _direct_original_max_speed : float = 0.0
+var _direct_original_max_speed: float = 0.0
 
 
 # XRStart node
-@onready var xr_start_node = XRTools.find_xr_child(
-	XRTools.find_xr_ancestor(self,
-	"*Staging",
-	"XRToolsStaging"),"StartXR","Node")
+@onready var xr_start_node: Node = XRTools.find_xr_child(
+		XRTools.find_xr_ancestor(
+				self,
+				"*Staging",
+				"XRToolsStaging",
+		),
+		"StartXR",
+		"Node",
+)
 
 
 # Variable used to cache left controller direct movement function, if any
 @onready var _desktop_direct_move := XRToolsDesktopMovementDirect.find(self)
-
-
-
-
-# Add support for is_xr_class on XRTools classes
-func is_xr_class(xr_name:  String) -> bool:
-	return xr_name == "XRToolsDesktopMovementSprint" or super(xr_name)
 
 
 func _ready():
@@ -69,10 +64,24 @@ func _ready():
 	super()
 
 
-# Perform sprinting
-func physics_movement(_delta: float, player_body: XRToolsPlayerBody, disabled: bool):
+## Add support for is_xr_class on XRTools classes
+func is_xr_class(xr_name: String) -> bool:
+	return xr_name == "XRToolsDesktopMovementSprint" or super(xr_name)
+
+
+## Perform sprinting
+func physics_movement(
+		_delta: float,
+		player_body: XRToolsPlayerBody,
+		disabled: bool
+) -> void:
 	# Skip if the controller isn't active or is not enabled
-	if !player_body.enabled or xr_start_node.is_xr_active() or disabled == true or !enabled:
+	if (
+			not player_body.enabled
+			or xr_start_node.is_xr_active()
+			or disabled
+			or not enabled
+	):
 		set_sprinting(false)
 		return
 
@@ -137,7 +146,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 	var warnings := super()
 
 	# Make sure player has at least one direct movement node
-	if !XRToolsDesktopMovementDirect.find(self):
+	if not XRToolsDesktopMovementDirect.find(self):
 		warnings.append("Player missing XRToolsDesktopMovementDirect node")
 
 	# Return warnings
