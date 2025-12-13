@@ -238,8 +238,13 @@ static func find_xr_ancestor(
 	# Loop finding ancestor
 	while node:
 		# If node matches filter then break
-		if (node.name.match(pattern) and
-			(type == "" or is_xr_class(node, type))):
+		if (
+				node.name.match(pattern)
+				and (
+						type == ""
+						or is_xr_class(node, type)
+				)
+		):
 			break
 
 		# Advance to parent
@@ -264,9 +269,17 @@ static func _find_xr_children(
 		var child := node.get_child(i)
 
 		# If child matches filter then add it to the array
-		if (child.name.match(pattern) and
-			(type == "" or is_xr_class(child, type)) and
-			(not owned or child.owner)):
+		if (
+				child.name.match(pattern)
+				and (
+						type == ""
+						or is_xr_class(child, type)
+				) 
+				and (
+						not owned
+						or child.owner
+				)
+		):
 			found.push_back(child)
 
 		# If recursive is enabled then descend into children
@@ -288,9 +301,17 @@ static func _find_xr_child(
 		var child := node.get_child(i)
 
 		# If child matches filter then return it
-		if (child.name.match(pattern) and
-			(type == "" or is_xr_class(child, type)) and
-			(not owned or child.owner)):
+		if (
+				child.name.match(pattern)
+				and (
+						type == ""
+						or is_xr_class(child, type)
+				) 
+				and (
+						not owned
+						or child.owner
+				)
+		):
 			return child
 
 		# If recursive is enabled then descend into children
