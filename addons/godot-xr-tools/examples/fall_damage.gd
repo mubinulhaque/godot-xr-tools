@@ -1,8 +1,6 @@
 @tool
 class_name XRToolsFallDamage
 extends XRToolsMovementProvider
-
-
 ## XR Tools Example Fall Damage Detector
 ##
 ## This example script detects the player falling to the ground and
@@ -26,34 +24,28 @@ extends XRToolsMovementProvider
 ## This file can handle simple demonstrations, but games will most likely
 ## want to modify it, for example to ignore damage on certain surfaces.
 
-
 ## Signal invoked when the player takes fall damage
-signal player_fall_damage(damage)
+signal player_fall_damage(damage: float)
 
 
 ## Movement provider order
-@export var order : int = 1000
+@export var order: int = 1000
 
 ## Ignore damage if player is launched up
-@export var ignore_launch : bool = true
+@export var ignore_launch: bool = true
 
 ## Only take damage on ground
-@export var ground_only : bool = false
+@export var ground_only: bool = false
 
 ## Acceleration limit
-@export var damage_threshold : float = 8.0
+@export var damage_threshold: float = 8.0
 
 
 ## Previous velocity
-var _previous_velocity : Vector3 = Vector3.ZERO
+var _previous_velocity: Vector3 = Vector3.ZERO
 
 
-# Add support for is_xr_class on XRTools classes
-func is_xr_class(xr_name:  String) -> bool:
-	return xr_name == "XRToolsFallDamage"
-
-
-func _ready():
+func _ready() -> void:
 	# In Godot 4 we must now manually call our super class ready function
 	super()
 
@@ -61,7 +53,16 @@ func _ready():
 	is_active = true
 
 
-func physics_movement(_delta: float, player_body: XRToolsPlayerBody, disabled: bool):
+# #Add support for is_xr_class on XRTools classes
+func is_xr_class(xr_name: String) -> bool:
+	return xr_name == "XRToolsFallDamage"
+
+
+func physics_movement(
+		_delta: float,
+		player_body: XRToolsPlayerBody,
+		disabled: bool,
+) -> void:
 	# Skip if not enabled
 	if disabled or !enabled:
 		_previous_velocity = player_body.velocity
@@ -74,7 +75,7 @@ func physics_movement(_delta: float, player_body: XRToolsPlayerBody, disabled: b
 	# Ignore launching the player
 	if ignore_launch:
 		# Forgive "up" acceleration equal to our "up" speed
-		var forgive : float = max(0, min(accel_vec.y, player_body.velocity.y))
+		var forgive: float = max(0, min(accel_vec.y, player_body.velocity.y))
 		accel_vec.y -= forgive
 
 	# Handle ground-only collisions
@@ -89,4 +90,4 @@ func physics_movement(_delta: float, player_body: XRToolsPlayerBody, disabled: b
 	# Detect fall damage
 	var accel := accel_vec.length()
 	if accel > damage_threshold:
-		emit_signal("player_fall_damage", accel)
+		player_fall_damage.emit(accel)
