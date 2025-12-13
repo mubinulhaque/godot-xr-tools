@@ -18,7 +18,7 @@ extends AudioStreamPlayer3D
 
 
 # Add support for is_class on XRTools classes
-func is_xr_class(xr_name:  String) -> bool:
+func is_xr_class(xr_name: String) -> bool:
 	return xr_name == "XRToolsAreaAudio"
 
 
@@ -30,14 +30,14 @@ func _ready() -> void:
 	area.body_exited.connect(_on_body_exited)
 
 
-func _on_body_entered(_body):
+func _on_body_entered(_body: Node3D) -> void:
 	if playing:
 		stop()
 	stream = area_audio_type.touch_sound
 	play()
 
 
-func _on_body_exited(_body):
+func _on_body_exited(_body: Node3D) -> void:
 	if playing:
 			stop()
 
