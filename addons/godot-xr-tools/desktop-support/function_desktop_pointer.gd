@@ -107,10 +107,10 @@ var last_target: Node3D = null
 ## Last collision point
 var last_collided_at: Vector3 = Vector3.ZERO
 
-# World scale
+## World scale
 var _world_scale: float = 1.0
 
-# XRStart Node
+## XRStart Node
 @onready var xr_start_node: Node = XRTools.find_xr_child(
 		XRTools.find_xr_ancestor(
 				self,
@@ -122,7 +122,7 @@ var _world_scale: float = 1.0
 )
 
 
-# Called when the node enters the scene tree for the first time.
+## Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# Do not initialise if in the editor
 	if Engine.is_editor_hint():
@@ -144,7 +144,7 @@ func _ready() -> void:
 	_update_suppress_mask()
 
 
-# Called on each frame to update the pickup
+## Called on each frame to update the pickup
 func _process(_delta: float) -> void:
 	# Do not process if in the editor
 	if Engine.is_editor_hint() or !is_inside_tree():
@@ -163,8 +163,8 @@ func _process(_delta: float) -> void:
 		_on_button_released(active_button_action)
 
 	# Find the new pointer target
-	var new_target : Node3D
-	var new_at : Vector3
+	var new_target: Node3D
+	var new_at: Vector3
 	var suppress_area := $SuppressArea
 	if (
 			enabled
@@ -229,98 +229,98 @@ func is_xr_class(xr_name: String) -> bool:
 	return xr_name == "XRToolsDesktopFunctionPointer"
 
 
-# Set pointer enabled property
+## Set pointer enabled property
 func set_enabled(p_enabled: bool) -> void:
 	enabled = p_enabled
 	if is_inside_tree():
 		_update_pointer()
 
 
-# Set pointer y_offset property
+## Set pointer y_offset property
 func set_y_offset(p_offset: float) -> void:
 	y_offset = p_offset
 	if is_inside_tree():
 		_update_y_offset()
 
 
-# Set pointer distance property
+## Set pointer distance property
 func set_distance(p_new_value: float) -> void:
 	distance = p_new_value
 	if is_inside_tree():
 		_update_distance()
 
 
-# Set pointer show_laser property
+## Set pointer show_laser property
 func set_show_laser(p_show: LaserShow) -> void:
 	show_laser = p_show
 	if is_inside_tree():
 		_update_pointer()
 
 
-# Set pointer laser_length property
+## Set pointer laser_length property
 func set_laser_length(p_laser_length: LaserLength) -> void:
 	laser_length = p_laser_length
 	if is_inside_tree():
 		_update_pointer()
 
 
-# Set pointer laser_material property
+## Set pointer laser_material property
 func set_laser_material(p_laser_material: StandardMaterial3D) -> void:
 	laser_material = p_laser_material
 	if is_inside_tree():
 		_update_pointer()
 
 
-# Set pointer laser_hit_material property
+## Set pointer laser_hit_material property
 func set_laser_hit_material(p_laser_hit_material: StandardMaterial3D) -> void:
 	laser_hit_material = p_laser_hit_material
 	if is_inside_tree():
 		_update_pointer()
 
 
-# Set pointer show_target property
+## Set pointer show_target property
 func set_show_target(p_show_target: bool) -> void:
 	show_target = p_show_target
 	if is_inside_tree():
 		$Target.visible = enabled and show_target and last_target
 
 
-# Set pointer target_radius property
+## Set pointer target_radius property
 func set_target_radius(p_target_radius: float) -> void:
 	target_radius = p_target_radius
 	if is_inside_tree():
 		_update_target_radius()
 
 
-# Set pointer target_material property
+## Set pointer target_material property
 func set_target_material(p_target_material: StandardMaterial3D) -> void:
 	target_material = p_target_material
 	if is_inside_tree():
 		_update_target_material()
 
 
-# Set pointer collision_mask property
+## Set pointer collision_mask property
 func set_collision_mask(p_new_mask: int) -> void:
 	collision_mask = p_new_mask
 	if is_inside_tree():
 		_update_collision_mask()
 
 
-# Set pointer collide_with_bodies property
+## Set pointer collide_with_bodies property
 func set_collide_with_bodies(p_new_value: bool) -> void:
 	collide_with_bodies = p_new_value
 	if is_inside_tree():
 		_update_collide_with_bodies()
 
 
-# Set pointer collide_with_areas property
+## Set pointer collide_with_areas property
 func set_collide_with_areas(p_new_value: bool) -> void:
 	collide_with_areas = p_new_value
 	if is_inside_tree():
 		_update_collide_with_areas()
 
 
-# Set suppress radius property
+## Set suppress radius property
 func set_suppress_radius(p_suppress_radius: float) -> void:
 	suppress_radius = p_suppress_radius
 	if is_inside_tree():
@@ -337,62 +337,62 @@ func _get_configuration_warnings() -> PackedStringArray:
 	var warnings := PackedStringArray()
 
 	# Check the controller node
-	if !XRTools.find_xr_ancestor(self,"*","XRCamera3D"):
+	if not XRTools.find_xr_ancestor(self,"*","XRCamera3D"):
 		warnings.append("This node must be within a branch of an XRCamera3D node")
 
 	# Return warnings
 	return warnings
 
 
-# Pointer Y offset update handler
+## Pointer Y offset update handler
 func _update_y_offset() -> void:
 	$Laser.position.y = y_offset * _world_scale
 	$RayCast.position.y = y_offset * _world_scale
 
 
-# Pointer distance update handler
+## Pointer distance update handler
 func _update_distance() -> void:
 	$RayCast.target_position.z = -distance
 	_update_pointer()
 
 
-# Pointer target radius update handler
+## Pointer target radius update handler
 func _update_target_radius() -> void:
 	$Target.mesh.radius = target_radius
 	$Target.mesh.height = target_radius * 2
 
 
-# Pointer target_material update handler
+## Pointer target_material update handler
 func _update_target_material() -> void:
 	$Target.set_surface_override_material(0, target_material)
 
 
-# Pointer collision_mask update handler
+## Pointer collision_mask update handler
 func _update_collision_mask() -> void:
 	$RayCast.collision_mask = collision_mask
 
 
-# Pointer collide_with_bodies update handler
+## Pointer collide_with_bodies update handler
 func _update_collide_with_bodies() -> void:
 	$RayCast.collide_with_bodies = collide_with_bodies
 
 
-# Pointer collide_with_areas update handler
+## Pointer collide_with_areas update handler
 func _update_collide_with_areas() -> void:
 	$RayCast.collide_with_areas = collide_with_areas
 
 
-# Pointer suppress_radius update handler
+## Pointer suppress_radius update handler
 func _update_suppress_radius() -> void:
 	$SuppressArea/CollisionShape3D.shape.radius = suppress_radius
 
 
-# Pointer suppress_mask update handler
+## Pointer suppress_mask update handler
 func _update_suppress_mask() -> void:
 	$SuppressArea.collision_mask = suppress_mask
 
 
-# Pointer visible artifacts update handler
+## Pointer visible artifacts update handler
 func _update_pointer() -> void:
 	if enabled and last_target:
 		_visible_hit(last_collided_at)
@@ -400,7 +400,7 @@ func _update_pointer() -> void:
 		_visible_miss()
 
 
-# Pointer-activation button pressed handler
+## Pointer-activation button pressed handler
 func _button_pressed() -> void:
 	if $RayCast.is_colliding():
 		# Report pressed
@@ -409,7 +409,7 @@ func _button_pressed() -> void:
 		XRToolsPointerEvent.pressed(self, target, last_collided_at)
 
 
-# Pointer-activation button released handler
+## Pointer-activation button released handler
 func _button_released() -> void:
 	if target:
 		# Report release
@@ -418,19 +418,19 @@ func _button_released() -> void:
 		last_collided_at = Vector3(0, 0, 0)
 
 
-# Button pressed handler
+## Button pressed handler
 func _on_button_pressed(p_button: String) -> void:
 	if p_button == active_button_action and enabled:
 		_button_pressed()
 
 
-# Button released handler
+## Button released handler
 func _on_button_released(p_button: String) -> void:
 	if p_button == active_button_action and target:
 		_button_released()
 
 
-# Update the laser active material
+## Update the laser active material
 func _update_laser_active_material(hit : bool) -> void:
 	if hit and laser_hit_material:
 		$Laser.set_surface_override_material(0, laser_hit_material)
@@ -438,7 +438,7 @@ func _update_laser_active_material(hit : bool) -> void:
 		$Laser.set_surface_override_material(0, laser_material)
 
 
-# Update the visible artifacts to show a hit
+## Update the visible artifacts to show a hit
 func _visible_hit(at: Vector3) -> void:
 	# Show target if enabled
 	if show_target:
@@ -466,7 +466,7 @@ func _visible_hit(at: Vector3) -> void:
 		$Laser.visible = false
 
 
-# Move the visible pointer artifacts to the target
+## Move the visible pointer artifacts to the target
 func _visible_move(at: Vector3) -> void:
 	# Move target if configured
 	if show_target:
@@ -479,7 +479,7 @@ func _visible_move(at: Vector3) -> void:
 		$Laser.position.z = collide_len * -0.5
 
 
-# Update the visible artifacts to show a miss
+## Update the visible artifacts to show a miss
 func _visible_miss() -> void:
 	# Ensure target is hidden
 	$Target.visible = false
