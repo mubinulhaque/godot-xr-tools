@@ -2,8 +2,6 @@
 @icon("res://addons/godot-xr-tools/editor/icons/audio.svg")
 class_name XRToolsAreaAudioType
 extends Resource
-
-
 ## XRTools Area Audio Type Resource
 ##
 ## This resource defines the audio stream to play when
@@ -17,7 +15,7 @@ extends Resource
 @export var touch_sound : AudioStream
 
 
-# This method checks for configuration issues.
+## This method checks for configuration issues.
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings := PackedStringArray()
 
