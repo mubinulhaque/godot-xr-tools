@@ -9,10 +9,10 @@ extends Resource
 
 
 ## Surface name
-@export var name : String = ""
+@export var name: String = ""
 
 ## Optional audio stream to play when the player lands on this surface
-@export var touch_sound : AudioStream
+@export var touch_sound: AudioStream
 
 
 ## This method checks for configuration issues.
