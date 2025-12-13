@@ -9,8 +9,9 @@ extends Node
 
 var _pointer_disabler := false
 var _last_xr_active := true
+
 # XRStart node
-@onready var xr_start_node : Node = XRTools.find_xr_child(
+@onready var xr_start_node: Node = XRTools.find_xr_child(
 		XRTools.find_xr_ancestor(
 				self,
 				"*Staging",
@@ -21,7 +22,7 @@ var _last_xr_active := true
 )
 
 # Parent controller
-@onready var _controller : XRController3D = XRHelpers.get_xr_controller(self)
+@onready var _controller: XRController3D = XRHelpers.get_xr_controller(self)
 
 
 func _ready() -> void:

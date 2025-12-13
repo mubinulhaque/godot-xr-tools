@@ -12,12 +12,12 @@ extends AudioStreamPlayer3D
 
 
 ## XRToolsPickableAudioType to associate with this pickable
-@export var pickable_audio_type  : XRToolsPickableAudioType
+@export var pickable_audio_type: XRToolsPickableAudioType
 
 ## delta throttle is 1/10 of delta
-@onready var delta_throttle : float = 0.1
+@onready var delta_throttle: float = 0.1
 
-@onready var _pickable : XRToolsPickable = get_parent()
+@onready var _pickable: XRToolsPickable = get_parent()
 
 
 # Add support for is_class on XRTools classes

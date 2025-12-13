@@ -11,16 +11,16 @@ extends Resource
 
 
 ## Surface name
-@export var name : String = ""
+@export var name: String = ""
 
 ## Optional audio stream to play when the player picks up the pickable
-@export var grab_sound : AudioStream
+@export var grab_sound: AudioStream
 
 ## Optional audio stream to play when the player drops the pickable
-@export var drop_sound : AudioStream
+@export var drop_sound: AudioStream
 
 ## Optional audio stream to play when the item is beign held by the player
-@export var hit_sound : AudioStream
+@export var hit_sound: AudioStream
 
 
 # This method checks for configuration issues.

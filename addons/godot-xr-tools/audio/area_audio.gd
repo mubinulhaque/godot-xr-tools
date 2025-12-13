@@ -12,9 +12,9 @@ extends AudioStreamPlayer3D
 
 
 ## XRToolsAreaAudioType to associate with this Area Audio
-@export var area_audio_type : XRToolsAreaAudioType
+@export var area_audio_type: XRToolsAreaAudioType
 
-@onready var area : Area3D = get_parent()
+@onready var area: Area3D = get_parent()
 
 
 # Add support for is_class on XRTools classes

@@ -12,7 +12,7 @@ extends Node
 
 
 ## XRToolsSurfaceAudioType to associate with this surface
-@export var surface_audio_type : XRToolsSurfaceAudioType
+@export var surface_audio_type: XRToolsSurfaceAudioType
 
 
 # Add support for is_class on XRTools classes
