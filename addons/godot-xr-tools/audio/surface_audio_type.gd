@@ -20,7 +20,7 @@ extends Resource
 @export var hit_sound : AudioStream
 
 ## Audio streams to play when the player walks on this surface
-@export var walk_sounds :Array[AudioStream] = []
+@export var walk_sounds : Array[AudioStream] = []
 
 ## Walking sound minimum pitch (to randomize steps)
 @export_range(0.5, 1.0) var walk_pitch_minimum : float = 0.8
