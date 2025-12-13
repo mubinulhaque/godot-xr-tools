@@ -9,7 +9,6 @@ extends Resource
 ## This resource defines the audio streams to play when
 ## the pickable is being picked up/ dropped/ hit something while being held
 
-
 ## Surface name
 @export var name: String = ""
 
@@ -23,7 +22,7 @@ extends Resource
 @export var hit_sound: AudioStream
 
 
-# This method checks for configuration issues.
+## This method checks for configuration issues.
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings := PackedStringArray()
 
