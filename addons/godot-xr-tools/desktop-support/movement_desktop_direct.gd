@@ -70,7 +70,7 @@ func physics_movement(
 		_disabled: bool
 ) -> void:
 	# Skip if the controller isn't active
-	if !player_body.enabled or xr_start_node.is_xr_active():
+	if not player_body.enabled or xr_start_node.is_xr_active():
 		return
 
 	#Calculate input vector
