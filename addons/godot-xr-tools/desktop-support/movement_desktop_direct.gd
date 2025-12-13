@@ -6,7 +6,7 @@ extends XRToolsMovementProvider
 ## XR Tools Movement Provider for Direct Movement
 ##
 ## This script provides direct movement for the player. This script works
-## with the [XRToolsPlayerBody] attached to the players [XROrigin3D].
+## with the [XRToolsPlayerBody] attached to the player's [XROrigin3D].
 ##
 ## The player may have multiple [XRToolsMovementDirect] nodes attached to
 ## different controllers to provide different types of direct movement.
