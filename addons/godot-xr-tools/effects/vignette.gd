@@ -209,8 +209,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 		warnings.append("Parent node must be in a branch from XROrigin3D")
 
 	# check camera node
-	var parent: XRCamera3D = get_parent()
-	if not parent:
+	if get_parent() is not XRCamera3D:
 		warnings.append("Parent node must be an XRCamera3D")
 
 	return warnings
