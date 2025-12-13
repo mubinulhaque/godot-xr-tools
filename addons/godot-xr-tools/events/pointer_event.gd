@@ -15,32 +15,33 @@ enum Type {
 	RELEASED,
 
 	## Pointer moved on target
-	MOVED
+	MOVED,
 }
 
 ## Type of pointer event
-var event_type : Type
+var event_type: Type
 
 ## Pointer generating event
-var pointer : Node3D
+var pointer: Node3D
 
 ## Target of pointer
-var target : Node3D
+var target: Node3D
 
 ## Point position
-var position : Vector3
+var position: Vector3
 
 ## Last point position
-var last_position : Vector3
+var last_position: Vector3
 
 
 ## Initialize a new instance of the XRToolsPointerEvent class
 func _init(
-		p_event_type : Type,
-		p_pointer : Node3D,
-		p_target : Node3D,
-		p_position : Vector3,
-		p_last_position : Vector3) -> void:
+		p_event_type: Type,
+		p_pointer: Node3D,
+		p_target: Node3D,
+		p_position: Vector3,
+		p_last_position: Vector3,
+) -> void:
 	event_type = p_event_type
 	pointer = p_pointer
 	target = p_target
@@ -50,85 +51,100 @@ func _init(
 
 ## Report a pointer entered event
 static func entered(
-		pointer : Node3D,
-		target : Node3D,
-		at : Vector3) -> void:
+		pointer: Node3D,
+		target: Node3D,
+		at: Vector3,
+) -> void:
 	report(
-		XRToolsPointerEvent.new(
-			Type.ENTERED,
-			pointer,
-			target,
-			at,
-			at))
+			XRToolsPointerEvent.new(
+					Type.ENTERED,
+					pointer,
+					target,
+					at,
+					at
+			)
+	)
 
 
 ## Report pointer moved event
 static func moved(
-		pointer : Node3D,
-		target : Node3D,
-		to : Vector3,
-		from : Vector3) -> void:
+		pointer: Node3D,
+		target: Node3D,
+		to: Vector3,
+		from: Vector3,
+) -> void:
 	report(
-		XRToolsPointerEvent.new(
-			Type.MOVED,
-			pointer,
-			target,
-			to,
-			from))
+			XRToolsPointerEvent.new(
+					Type.MOVED,
+					pointer,
+					target,
+					to,
+					from
+			)
+	)
 
 
 ## Report pointer pressed event
 static func pressed(
-		pointer : Node3D,
-		target : Node3D,
-		at : Vector3) -> void:
+		pointer: Node3D,
+		target: Node3D,
+		at: Vector3,
+) -> void:
 	report(
-		XRToolsPointerEvent.new(
-			Type.PRESSED,
-			pointer,
-			target,
-			at,
-			at))
+			XRToolsPointerEvent.new(
+					Type.PRESSED,
+					pointer,
+					target,
+					at,
+					at,
+			)
+	)
 
 
 ## Report pointer released event
 static func released(
-		pointer : Node3D,
-		target : Node3D,
-		at : Vector3) -> void:
+		pointer: Node3D,
+		target: Node3D,
+		at: Vector3,
+) -> void:
 	report(
-		XRToolsPointerEvent.new(
-			Type.RELEASED,
-			pointer,
-			target,
-			at,
-			at))
+			XRToolsPointerEvent.new(
+					Type.RELEASED,
+					pointer,
+					target,
+					at,
+					at,
+			)
+	)
 
 
 ## Report a pointer exited event
 static func exited(
-		pointer : Node3D,
-		target : Node3D,
-		last : Vector3) -> void:
+		pointer: Node3D,
+		target: Node3D,
+		last: Vector3,
+) -> void:
 	report(
-		XRToolsPointerEvent.new(
-			Type.EXITED,
-			pointer,
-			target,
-			last,
-			last))
+			XRToolsPointerEvent.new(
+					Type.EXITED,
+					pointer,
+					target,
+					last,
+					last,
+			)
+	)
 
 
 ## Report a pointer event
-static func report(event : XRToolsPointerEvent) -> void:
+static func report(event: XRToolsPointerEvent) -> void:
 	# Fire event on pointer
 	if is_instance_valid(event.pointer):
 		if event.pointer.has_signal("pointing_event"):
-			event.pointer.emit_signal("pointing_event", event)
+			event.pointer.pointing_event.emit(event)
 
 	# Fire event/method on the target if it's valid
 	if is_instance_valid(event.target):
 		if event.target.has_signal("pointer_event"):
-			event.target.emit_signal("pointer_event", event)
+			event.target.pointer_event.emit(event)
 		elif event.target.has_method("pointer_event"):
 			event.target.pointer_event(event)
