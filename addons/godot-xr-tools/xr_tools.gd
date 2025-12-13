@@ -11,7 +11,7 @@ enum HandOffsetMode {
 	HAND_OFFSET_AUTO, # Determine based on using default poses
 	HAND_OFFSET_AIM, # Our pose is an aim pose
 	HAND_OFFSET_GRIP, # Our pose is a grip pose
-	HAND_OFFSET_PALM # Our pose is a palm pose
+	HAND_OFFSET_PALM, # Our pose is a palm pose
 }
 
 # Map interaction profiles to grip rotations.
@@ -22,7 +22,7 @@ static var grip_rotations: Dictionary[String, float] = {
 	"/interaction_profiles/meta/touch_controller_plus": deg_to_rad(-60.0),
 	"/interaction_profiles/bytedance/pico4_controller": deg_to_rad(-40.0),
 	"/interaction_profiles/bytedance/pico4s_controller": deg_to_rad(-40.0),
-	"/interaction_profiles/bytedance/pico_ultra_controller_bd": deg_to_rad(-40.0)
+	"/interaction_profiles/bytedance/pico_ultra_controller_bd": deg_to_rad(-40.0),
 }
 
 ## Get our configured grip threshold.
@@ -181,7 +181,8 @@ static func find_xr_children(
 		pattern : String,
 		type : String = "",
 		recursive : bool = true,
-		owned : bool = true) -> Array:
+		owned : bool = true,
+) -> Array:
 	# Find the children
 	var found := []
 	if node:
@@ -209,7 +210,8 @@ static func find_xr_child(
 		pattern : String,
 		type : String = "",
 		recursive : bool = true,
-		owned : bool = true) -> Node:
+		owned : bool = true,
+) -> Node:
 	# Find the child
 	if node:
 		return _find_xr_child(node, pattern, type, recursive, owned)
@@ -231,7 +233,8 @@ static func find_xr_child(
 static func find_xr_ancestor(
 		node : Node,
 		pattern : String,
-		type : String = "") -> Node:
+		type : String = "",
+) -> Node:
 	# Loop finding ancestor
 	while node:
 		# If node matches filter then break
@@ -253,7 +256,8 @@ static func _find_xr_children(
 		pattern : String,
 		type : String,
 		recursive : bool,
-		owned : bool) -> void:
+		owned : bool,
+) -> void:
 	# Iterate over all children
 	for i in node.get_child_count():
 		# Get the child
@@ -276,7 +280,8 @@ static func _find_xr_child(
 		pattern : String,
 		type : String,
 		recursive : bool,
-		owned : bool) -> Node:
+		owned : bool
+) -> Node:
 	# Iterate over all children
 	for i in node.get_child_count():
 		# Get the child
@@ -321,7 +326,10 @@ static func get_grip_rotation(profile : String) -> float:
 
 ## Helper function to get a transform that offset the controller pose
 ## so we center on the palm
-static func get_palm_offset(mode : HandOffsetMode, xr_controller : XRController3D) -> Transform3D:
+static func get_palm_offset(
+		mode : HandOffsetMode,
+		xr_controller : XRController3D,
+) -> Transform3D:
 	var transform: Transform3D = Transform3D()
 	var is_left_hand: bool = true
 	var profile : String = ""
@@ -380,7 +388,10 @@ static func get_palm_offset(mode : HandOffsetMode, xr_controller : XRController3
 ## Note that if the aim pose is used, we use that location as is,
 ## else we try and reproduce the original aim pose location,
 ## which may be different.
-static func get_aim_offset(mode : HandOffsetMode, xr_controller : XRController3D) -> Transform3D:
+static func get_aim_offset(
+		mode : HandOffsetMode,
+		xr_controller : XRController3D,
+) -> Transform3D:
 	var transform: Transform3D = Transform3D()
 	var is_left_hand: bool = true
 	var profile : String = ""
