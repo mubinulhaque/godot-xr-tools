@@ -21,7 +21,7 @@ extends AudioStreamPlayer3D
 
 
 # Add support for is_class on XRTools classes
-func is_xr_class(xr_name:  String) -> bool:
+func is_xr_class(xr_name: String) -> bool:
 	return xr_name == "XRToolsPickableAudio"
 
 
@@ -34,7 +34,7 @@ func _ready() -> void:
 	_pickable.dropped.connect(_on_dropped)
 
 
-func _physics_process(_delta):
+func _physics_process(_delta: float) -> void:
 	if !_pickable.sleeping:
 		if _pickable.linear_velocity.length() > 5:
 			volume_db = 0
@@ -43,7 +43,7 @@ func _physics_process(_delta):
 
 
 # Called when this object is picked up
-func _on_picked_up(_pickable) -> void:
+func _on_picked_up(_pickable: XRToolsPickable) -> void:
 	volume_db = 0
 	if playing:
 		stop()
@@ -52,15 +52,15 @@ func _on_picked_up(_pickable) -> void:
 
 
 # Called when this object is dropped
-func _on_dropped(_pickable) -> void:
+func _on_dropped(_pickable: XRToolsPickable) -> void:
 	for body in _pickable.get_colliding_bodies():
 		if playing:
 			stop()
 
 
-func _on_body_entered(_body):
+func _on_body_entered(_body: Node3D) -> void:
 	if playing:
-			stop()
+		stop()
 	if _pickable.is_picked_up():
 		stream = pickable_audio_type.hit_sound
 	else:
