@@ -28,7 +28,7 @@ enum LaserShow {
 ## Enumeration of laser length modes
 enum LaserLength {
 	FULL = 0,		## Full length
-	COLLIDE = 1		## Draw to collision
+	COLLIDE = 1,		## Draw to collision
 }
 
 
@@ -111,18 +111,19 @@ var last_collided_at : Vector3 = Vector3.ZERO
 var _world_scale : float = 1.0
 
 # XRStart Node
-@onready var xr_start_node = XRTools.find_xr_child(
-	XRTools.find_xr_ancestor(self,
-	"*Staging",
-	"XRToolsStaging"),"StartXR","Node")
-
-## Add support for is_xr_class on XRTools classes
-func is_xr_class(xr_name:  String) -> bool:
-	return xr_name == "XRToolsDesktopFunctionPointer"
+@onready var xr_start_node : Node = XRTools.find_xr_child(
+		XRTools.find_xr_ancestor(
+				self,
+				"*Staging",
+				"XRToolsStaging",
+		),
+		"StartXR",
+		"Node",
+)
 
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
+func _ready() -> void:
 	# Do not initialise if in the editor
 	if Engine.is_editor_hint():
 		return
@@ -142,15 +143,16 @@ func _ready():
 	_update_suppress_radius()
 	_update_suppress_mask()
 
+
 # Called on each frame to update the pickup
-func _process(_delta):
+func _process(_delta: float) -> void:
 	# Do not process if in the editor
 	if Engine.is_editor_hint() or !is_inside_tree():
 		return
 
 	# Handle world-scale changes
 	var new_world_scale := XRServer.world_scale
-	if (_world_scale != new_world_scale):
+	if _world_scale != new_world_scale:
 		_world_scale = new_world_scale
 		_update_y_offset()
 	set_enabled(!xr_start_node.is_xr_active())
@@ -164,10 +166,12 @@ func _process(_delta):
 	var new_target : Node3D
 	var new_at : Vector3
 	var suppress_area := $SuppressArea
-	if (enabled and
-		not $SuppressArea.has_overlapping_bodies() and
-		not $SuppressArea.has_overlapping_areas() and
-		$RayCast.is_colliding()):
+	if (
+			enabled
+			and not $SuppressArea.has_overlapping_bodies()
+			and not $SuppressArea.has_overlapping_areas()
+			and $RayCast.is_colliding()
+	):
 		new_at = $RayCast.get_collision_point()
 		if target:
 			# Locked to 'target' even if we're colliding with something else
@@ -219,15 +223,11 @@ func _process(_delta):
 	last_target = new_target
 	last_collided_at = new_at
 
-func _get_configuration_warnings() -> PackedStringArray:
-	var warnings := PackedStringArray()
 
-	# Check the controller node
-	if !XRTools.find_xr_ancestor(self,"*","XRCamera3D"):
-		warnings.append("This node must be within a branch of an XRCamera3D node")
+## Add support for is_xr_class on XRTools classes
+func is_xr_class(xr_name: String) -> bool:
+	return xr_name == "XRToolsDesktopFunctionPointer"
 
-	# Return warnings
-	return warnings
 
 # Set pointer enabled property
 func set_enabled(p_enabled : bool) -> void:
@@ -331,6 +331,17 @@ func set_suppress_mask(p_suppress_mask : int) -> void:
 	suppress_mask = p_suppress_mask
 	if is_inside_tree():
 		_update_suppress_mask()
+
+
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings := PackedStringArray()
+
+	# Check the controller node
+	if !XRTools.find_xr_ancestor(self,"*","XRCamera3D"):
+		warnings.append("This node must be within a branch of an XRCamera3D node")
+
+	# Return warnings
+	return warnings
 
 
 # Pointer Y offset update handler
