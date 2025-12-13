@@ -2,8 +2,6 @@
 @icon("res://addons/godot-xr-tools/editor/icons/audio.svg")
 class_name XRToolsAreaAudio
 extends AudioStreamPlayer3D
-
-
 ## XRTools Area Audio
 ##
 ## This node is attached as a child of a Area3D,
@@ -17,12 +15,12 @@ extends AudioStreamPlayer3D
 @onready var area: Area3D = get_parent()
 
 
-# Add support for is_class on XRTools classes
+## Add support for is_class on XRTools classes
 func is_xr_class(xr_name: String) -> bool:
 	return xr_name == "XRToolsAreaAudio"
 
 
-# Called when the node enters the scene tree for the first time.
+## Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# Listen for enter
 	area.body_entered.connect(_on_body_entered)
@@ -42,7 +40,7 @@ func _on_body_exited(_body: Node3D) -> void:
 			stop()
 
 
-# This method checks for configuration issues.
+## This method checks for configuration issues.
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings := PackedStringArray()
 
